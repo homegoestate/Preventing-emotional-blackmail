@@ -1,0 +1,541 @@
+<!-- Chosen Palette: Warm Neutrals & Trust Blue (Background: #fdfbf7, Primary: #1e3a8a, Accent: #0ea5e9, Warning: #f59e0b) -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企業信任生態系建構系統 | 宏國地政 | 易丞地政 專屬版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #fdfbf7; color: #374151; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .nav-active { background-color: #eff6ff; color: #1e3a8a; border-right: 4px solid #1e3a8a; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="h-screen flex flex-col md:flex-row overflow-hidden">
+
+    <!-- Sidebar -->
+    <nav class="w-full md:w-64 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col z-20 shadow-sm">
+        <div class="p-6 border-b border-gray-100 bg-slate-50">
+            <h1 class="text-xl font-bold text-slate-800">信任生態系戰略</h1>
+            <p class="text-xs text-slate-500 mt-1">內外關係管理與過濾系統</p>
+        </div>
+        <div class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1">
+                <li><button onclick="showSection('dashboard')" id="nav-dashboard" class="w-full text-left px-6 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-blue-800 transition-colors nav-active">📊 總覽儀表板</button></li>
+                <li><button onclick="showSection('internal')" id="nav-internal" class="w-full text-left px-6 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-blue-800 transition-colors">🧠 內部：心理安全感</button></li>
+                <li><button onclick="showSection('external')" id="nav-external" class="w-full text-left px-6 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-blue-800 transition-colors">🎭 外部：偽裝者雷達</button></li>
+                <li><button onclick="showSection('strategy')" id="nav-strategy" class="w-full text-left px-6 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-blue-800 transition-colors">🏯 戰略：信任護城河</button></li>
+                <li><button onclick="showSection('tactics')" id="nav-tactics" class="w-full text-left px-6 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-blue-800 transition-colors">⚔️ 戰術：團隊防禦演練</button></li>
+            </ul>
+        </div>
+        <!-- User Auth Profile Area -->
+        <div class="p-4 border-t border-gray-100">
+            <div id="sidebarLoggedOut">
+                <button onclick="loginWithGoogle()" class="w-full bg-blue-600 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-blue-700 transition shadow-sm flex items-center justify-center">
+                    <svg class="w-4 h-4 mr-2 bg-white rounded-full p-0.5" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Google 登入解鎖 AI
+                </button>
+            </div>
+            <div id="sidebarLoggedIn" class="hidden flex items-center justify-between bg-blue-50 p-2 rounded-lg border border-blue-100">
+                <div class="flex items-center gap-2 overflow-hidden">
+                    <img id="userAvatar" class="w-7 h-7 rounded-full border border-blue-200" src="" alt="">
+                    <span id="userName" class="text-xs font-bold text-blue-900 truncate"></span>
+                </div>
+                <button onclick="logout()" class="text-xs text-red-500 hover:text-red-700 font-bold px-2">登出</button>
+            </div>
+            <div class="text-[10px] text-gray-400 text-center mt-3">專屬 宏國地政 | 易丞地政 團隊</div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-[#fdfbf7] p-4 md:p-8 relative">
+        
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="section-content space-y-8 fade-in">
+            <header class="mb-8 border-b border-gray-200 pb-6">
+                <h2 class="text-3xl font-black text-slate-800 mb-2">經營者戰略總覽</h2>
+                <p class="text-slate-600 max-w-4xl text-sm md:text-base leading-relaxed">
+                    本系統旨在協助您解決兩難：如何在內部建立「敢說真話」的高效團隊，同時在外部有效過濾「目的性極強」的偽裝者。請點擊左側選單進行診斷，或登入以啟用 AI 演練功能。
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards abbreviated for succinctness, identical to previous version -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-amber-400">
+                    <h3 class="text-lg font-bold text-slate-700 mb-2 flex justify-between">內部風險 <span>⚠️</span></h3>
+                    <p class="text-2xl font-bold text-slate-800 mb-2">艾比林矛盾</p>
+                    <p class="text-xs text-slate-500">團隊為了和氣不敢反對老闆，容易導致錯誤決策。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-red-500">
+                    <h3 class="text-lg font-bold text-slate-700 mb-2 flex justify-between">外部威脅 <span>👺</span></h3>
+                    <p class="text-2xl font-bold text-slate-800 mb-2">偽裝者 (Faker)</p>
+                    <p class="text-xs text-slate-500">對老闆極度客氣，卻私下把助理當免費跑腿。是消耗資源黑洞。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-600">
+                    <h3 class="text-lg font-bold text-slate-700 mb-2 flex justify-between">核心解方 <span>🛡️</span></h3>
+                    <p class="text-2xl font-bold text-slate-800 mb-2">防禦機制與 IP</p>
+                    <p class="text-xs text-slate-500">建立「付費牆」與「工作足跡」，過濾白嫖投機客。</p>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mt-6">
+                <h3 class="text-lg font-bold text-slate-800 mb-4">人際網絡價值分佈 (理論模型)</h3>
+                <div class="chart-container"><canvas id="dashboardChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- INTERNAL -->
+        <div id="internal" class="section-content hidden space-y-8 fade-in">
+            <header class="border-b border-gray-200 pb-6">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">內部診斷：心理安全感</h2>
+            </header>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-fit">
+                    <h3 class="font-bold text-lg mb-4 text-blue-900 border-b pb-2">團隊現況評估</h3>
+                    <div class="mb-8">
+                        <label class="block text-sm font-bold text-slate-700 mb-3">老闆的業績要求 (壓力)</label>
+                        <input type="range" id="inputStandard" min="0" max="10" value="5" class="w-full h-2 bg-gray-200 rounded-lg accent-blue-600">
+                    </div>
+                    <div class="mb-8">
+                        <label class="block text-sm font-bold text-slate-700 mb-3">員工的安全感 (敢說真話)</label>
+                        <input type="range" id="inputSafety" min="0" max="10" value="5" class="w-full h-2 bg-gray-200 rounded-lg accent-green-500">
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 mt-4">
+                        <h4 class="font-bold text-sm text-slate-700 mb-2">目前狀態：<br><span id="zoneResult" class="text-blue-600 text-xl">評估中...</span></h4>
+                        <p id="zoneDesc" class="text-xs text-slate-600 leading-relaxed mt-2"></p>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-center">
+                    <div class="chart-container"><canvas id="safetyChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXTERNAL -->
+        <div id="external" class="section-content hidden space-y-8 fade-in">
+            <header class="border-b border-gray-200 pb-6">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">外部過濾：偽裝者雷達</h2>
+            </header>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border-t-4 border-green-500 p-6">
+                    <h3 class="font-bold text-xl text-slate-800 mb-2">🎁 真誠合作者</h3>
+                    <p class="text-sm text-slate-600 mb-4">有福同享，懂得尊重雙方專業與資源。</p>
+                    <div class="text-xs bg-green-50 text-green-700 p-2 rounded"><strong>判斷方式：</strong> 主動提議利益分配，不隨便麻煩宏國地政同仁。</div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border-t-4 border-red-500 p-6 ring-2 ring-red-100">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-xl text-slate-800">🎭 偽裝者</h3>
+                        <span class="bg-red-100 text-red-600 text-[10px] px-2 py-1 rounded-full font-bold">高風險</span>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">對老闆稱兄道弟，私下卻把助理當免費勞工。</p>
+                    <div class="text-xs bg-red-50 text-red-700 p-2 rounded"><strong>判斷方式：</strong> 觀察他對待您助理的態度！滿嘴話術畫大餅。</div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border-t-4 border-blue-500 p-6">
+                    <h3 class="font-bold text-xl text-slate-800 mb-2">⚖️ 互惠者</h3>
+                    <p class="text-sm text-slate-600 mb-4">講求公平，一報還一報，不會隨便佔便宜。</p>
+                    <div class="text-xs bg-blue-50 text-blue-700 p-2 rounded"><strong>判斷方式：</strong> 明確談論對價關係（服務費），親兄弟明算帳。</div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="chart-container"><canvas id="giverTakerChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- STRATEGY -->
+        <div id="strategy" class="section-content hidden space-y-8 fade-in">
+            <header class="border-b border-gray-200 pb-6">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">戰略部署：設立「付費牆」與護城河</h2>
+            </header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-lg text-slate-800 mb-4 text-center">人際網絡同心圓</h3>
+                    <div class="chart-container"><canvas id="circlesChart"></canvas></div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-lg text-slate-800 mb-4 text-center">信任漏斗 IP 戰略</h3>
+                    <div class="chart-container"><canvas id="moatChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TACTICS (Simulator + AI) -->
+        <div id="tactics" class="section-content hidden space-y-8 fade-in">
+            <header class="border-b border-gray-200 pb-6">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">團隊防禦演練 (SOP 模擬)</h2>
+                <p class="text-slate-600 mb-4 text-sm">點擊下方卡片，練習遇到不講理的業務時該如何聰明回擊。</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <button onclick="loadScenario(1)" class="p-4 bg-white border-2 border-slate-200 rounded-xl text-left hover:border-blue-500 transition-all shadow-sm">
+                    <div class="font-bold text-slate-800 mb-1">情境 A：被拗免費試算</div>
+                    <p class="text-xs text-slate-500">仲介以「未來會簽約」要求立刻免費算稅。</p>
+                </button>
+                <button onclick="loadScenario(2)" class="p-4 bg-white border-2 border-slate-200 rounded-xl text-left hover:border-blue-500 transition-all shadow-sm">
+                    <div class="font-bold text-slate-800 mb-1">情境 B：功勞被搶走</div>
+                    <p class="text-xs text-slate-500">第三方業務說：「這是我找關係辦好的」。</p>
+                </button>
+                <button onclick="loadScenario(3)" class="p-4 bg-white border-2 border-slate-200 rounded-xl text-left hover:border-blue-500 transition-all shadow-sm">
+                    <div class="font-bold text-slate-800 mb-1">情境 C：助理變跑腿</div>
+                    <p class="text-xs text-slate-500">大客戶要求助理做私事。</p>
+                </button>
+            </div>
+
+            <!-- AI Lock Screen -->
+            <div id="aiLockScreen" class="bg-slate-50 p-8 rounded-xl border border-slate-200 shadow-sm mb-8 text-center fade-in">
+                <div class="text-4xl mb-3">🔒</div>
+                <h3 class="font-bold text-slate-800 mb-2">專屬 AI 實戰顧問 (未解鎖)</h3>
+                <p class="text-sm text-slate-600 mb-4">為了保護 API 資源與確保您擁有 Gemini 權限，請先使用 Google 帳號登入系統。</p>
+                <button onclick="loginWithGoogle()" class="bg-white border border-slate-300 text-slate-700 px-6 py-2 rounded-full text-sm font-bold hover:bg-slate-100 transition-colors shadow-sm inline-flex items-center">
+                    <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    連結 Google 帳號
+                </button>
+            </div>
+
+            <!-- AI Unlocked Screen -->
+            <div id="aiUnlockedScreen" class="hidden bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-indigo-100 shadow-sm mb-8 fade-in">
+                <h3 class="font-bold text-indigo-900 mb-2 flex items-center"><span class="text-xl mr-2">✨</span> AI 實戰顧問 (已解鎖)</h3>
+                <p class="text-sm text-indigo-700 mb-4">輸入您目前遇到的麻煩情境，AI 將為您判斷對方的動機，並提供宏國地政專屬的應對 SOP。</p>
+                <textarea id="aiCustomScenarioInput" rows="3" class="w-full p-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm mb-3" placeholder="例如：有個代銷一直要我幫他私下查別人的謄本..."></textarea>
+                <button onclick="analyzeCustomScenario()" id="aiAnalyzeBtn" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700 transition-colors flex items-center">
+                    <span>開始分析</span>
+                    <div id="aiAnalyzeSpinner" class="hidden ml-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                </button>
+                <div id="aiCustomScenarioResult" class="hidden mt-4 p-4 bg-white rounded-lg border border-indigo-100 text-sm text-slate-700 leading-relaxed shadow-inner"></div>
+            </div>
+
+            <!-- Scenario Game Area -->
+            <div id="scenarioContainer" class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hidden">
+                <div class="bg-blue-900 text-white p-4 flex justify-between items-center">
+                    <h3 id="scenTitle" class="font-bold text-lg">互動演練區</h3>
+                </div>
+                <div class="p-6 md:p-8">
+                    <div id="scenText" class="text-lg text-slate-700 mb-8 font-medium leading-relaxed bg-slate-50 p-4 rounded-lg"></div>
+                    <div id="scenOptions" class="grid grid-cols-1 gap-4"></div>
+
+                    <div id="scenFeedback" class="hidden mt-6 p-6 rounded-lg border">
+                        <strong id="feedbackTitle" class="block mb-2 text-xl"></strong>
+                        <p id="feedbackText" class="text-base text-slate-700 mb-4 leading-relaxed"></p>
+                        
+                        <!-- AI Draft Area (Gated) -->
+                        <div id="aiDraftLockArea" class="hidden mt-4 pt-4 border-t border-gray-200 text-xs text-slate-500 flex items-center">
+                            🔒 登入 Google 帳號即可解鎖「AI 自動草擬訊息」功能
+                        </div>
+                        <div id="aiDraftActionArea" class="hidden mt-4 pt-4 border-t border-gray-200">
+                            <button onclick="generateDraftEmail()" id="aiDraftBtn" class="bg-blue-600 text-white px-4 py-2 rounded text-sm font-bold hover:bg-blue-700 transition-colors flex items-center">
+                                <span>✨ 讓 AI 幫你草擬婉拒/回報訊息</span>
+                                <div id="aiDraftSpinner" class="hidden ml-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            </button>
+                            <div id="aiDraftResult" class="hidden mt-3 p-4 bg-white border border-blue-100 rounded text-sm text-slate-700 leading-relaxed"></div>
+                        </div>
+
+                        <button onclick="resetScenario()" class="mt-6 px-6 py-2 bg-slate-800 text-white text-sm rounded hover:bg-slate-700">重新選擇</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal UI for Errors -->
+    <div id="errorModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl shadow-xl max-w-sm w-full mx-4">
+            <h3 class="text-lg font-bold text-red-600 mb-2">系統提示</h3>
+            <p id="errorModalText" class="text-sm text-slate-700 mb-4"></p>
+            <div class="text-right">
+                <button onclick="closeErrorModal()" class="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700">確定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ES Module Javascript for Firebase & UI Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInWithCustomToken, signInAnonymously, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // ==========================================
+        // 🚨 GitHub 部署必備設定 🚨
+        // ==========================================
+        
+        // 1. Firebase 設定 (用於 Google 登入驗證)
+        // 請將下方內容替換為您從 Firebase 控制台取得的 Config
+        let firebaseConfig = {
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT"
+        };
+        // 環境變數回退 (系統自動注入)
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+            try { firebaseConfig = JSON.parse(__firebase_config); } catch (e) { console.error(e); }
+        }
+
+        // 2. Gemini API Key (用於 AI 回覆)
+        // 上線至 GitHub 時，請務必將您的 Key 填入下方引號中 ("")
+        const apiKey = ""; 
+
+        // ==========================================
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        window.currentUser = null;
+
+        // Firebase 初始化驗證
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else if (typeof __firebase_config !== 'undefined') {
+                    await signInAnonymously(auth);
+                }
+            } catch(e) { console.error("Auto auth failed", e); }
+        };
+        initAuth();
+
+        // 監聽登入狀態
+        onAuthStateChanged(auth, (user) => {
+            if (user && !user.isAnonymous) {
+                // 已登入：解鎖 AI
+                window.currentUser = user;
+                document.getElementById('aiLockScreen').classList.add('hidden');
+                document.getElementById('aiUnlockedScreen').classList.remove('hidden');
+                document.getElementById('sidebarLoggedOut').classList.add('hidden');
+                document.getElementById('sidebarLoggedIn').classList.remove('hidden');
+                document.getElementById('sidebarLoggedIn').classList.add('flex');
+                document.getElementById('userName').innerText = user.displayName || '使用者';
+                if(user.photoURL) document.getElementById('userAvatar').src = user.photoURL;
+            } else {
+                // 未登入：鎖定 AI
+                window.currentUser = null;
+                document.getElementById('aiLockScreen').classList.remove('hidden');
+                document.getElementById('aiUnlockedScreen').classList.add('hidden');
+                document.getElementById('sidebarLoggedOut').classList.remove('hidden');
+                document.getElementById('sidebarLoggedIn').classList.add('hidden');
+                document.getElementById('sidebarLoggedIn').classList.remove('flex');
+            }
+        });
+
+        // 暴露給 HTML 點擊的事件
+        window.loginWithGoogle = async () => {
+            try {
+                if(firebaseConfig.apiKey === "YOUR_FIREBASE_API_KEY") {
+                    throw new Error("系統管理員尚未設定 Firebase Config，請先於程式碼中完成設定。");
+                }
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                window.showErrorModal(error.message);
+            }
+        };
+        window.logout = async () => { await signOut(auth); };
+
+        window.showErrorModal = (msg) => {
+            document.getElementById('errorModalText').innerText = msg;
+            document.getElementById('errorModal').classList.remove('hidden');
+            document.getElementById('errorModal').classList.add('flex');
+        };
+        window.closeErrorModal = () => {
+            document.getElementById('errorModal').classList.add('hidden');
+            document.getElementById('errorModal').classList.remove('flex');
+        };
+
+        // --- UI Navigation ---
+        window.showSection = (sectionId) => {
+            document.querySelectorAll('.section-content').forEach(el => {
+                el.classList.add('hidden'); el.classList.remove('fade-in'); 
+            });
+            const target = document.getElementById(sectionId);
+            target.classList.remove('hidden'); void target.offsetWidth; target.classList.add('fade-in');
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('nav-active', 'bg-gray-50', 'text-blue-800');
+                btn.classList.add('text-gray-600');
+            });
+            document.getElementById(`nav-${sectionId}`).classList.add('nav-active');
+            document.getElementById(`nav-${sectionId}`).classList.remove('text-gray-600');
+            window.dispatchEvent(new Event('resize')); // chart fix
+        };
+
+        // --- Charts & Simulator Logic ---
+        Chart.defaults.font.family = "'Noto Sans TC', sans-serif";
+        
+        // Safety Chart (Interactive)
+        const ctxSafety = document.getElementById('safetyChart').getContext('2d');
+        const safetyChart = new Chart(ctxSafety, {
+            type: 'bubble',
+            data: {
+                datasets: [
+                    { label: '團隊現狀', data: [{x: 5, y: 5, r: 15}], backgroundColor: '#2563eb', borderColor: '#fff', borderWidth: 2 },
+                    { label: '參考區間', data: [{x:2.5,y:2.5,r:8},{x:7.5,y:2.5,r:8},{x:2.5,y:7.5,r:8},{x:7.5,y:7.5,r:8}], backgroundColor: ['#94a3b8', '#f87171', '#fbbf24', '#4ade80'] }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                scales: {
+                    x: { min: 0, max: 10, title: { display: true, text: '老闆的要求壓力' }, grid: { color: (ctx) => ctx.tick.value === 5 ? '#94a3b8' : '#e2e8f0', lineWidth: (ctx) => ctx.tick.value === 5 ? 2 : 1 } },
+                    y: { min: 0, max: 10, title: { display: true, text: '員工的安全感' }, grid: { color: (ctx) => ctx.tick.value === 5 ? '#94a3b8' : '#e2e8f0', lineWidth: (ctx) => ctx.tick.value === 5 ? 2 : 1 } }
+                }
+            }
+        });
+
+        const updateSafety = () => {
+            const std = document.getElementById('inputStandard').value;
+            const safe = document.getElementById('inputSafety').value;
+            safetyChart.data.datasets[0].data[0].x = std;
+            safetyChart.data.datasets[0].data[0].y = safe;
+            safetyChart.update();
+            const resText = document.getElementById('zoneResult'), resDesc = document.getElementById('zoneDesc');
+            if (std < 5 && safe < 5) { resText.innerHTML="冷漠區 <span class='text-sm'>(員工混日子)</span>"; resText.className="text-gray-500 font-bold text-xl"; resDesc.innerText="建議：需要設立明確的獎懲與目標。"; }
+            else if (std >= 5 && safe < 5) { resText.innerHTML="焦慮區 <span class='text-sm'>(員工害怕犯錯)</span>"; resText.className="text-red-600 font-bold text-xl"; resDesc.innerText="🚨 危險！請給予員工犯錯的空間，保護他們不被外部客戶欺負。"; }
+            else if (std < 5 && safe >= 5) { resText.innerHTML="舒適區 <span class='text-sm'>(一團和氣)</span>"; resText.className="text-amber-500 font-bold text-xl"; resDesc.innerText="大家感情很好，但容易陷入盲從。建議：適度給予業績壓力。"; }
+            else { resText.innerHTML="學習區 <span class='text-sm'>(戰鬥力滿點)</span>"; resText.className="text-green-600 font-bold text-xl"; resDesc.innerText="✅ 完美狀態！員工遇到不合理的奧客敢跟老闆報告。"; }
+        };
+        document.getElementById('inputStandard').addEventListener('input', updateSafety);
+        document.getElementById('inputSafety').addEventListener('input', updateSafety);
+        updateSafety();
+
+        // Dashboards & Static Charts
+        new Chart(document.getElementById('dashboardChart').getContext('2d'), { type: 'bar', data: { labels: ['索取者', '互惠者', '給予者'], datasets: [{ data: [10, 25, 65], backgroundColor: ['#f87171', '#60a5fa', '#4ade80'], borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
+        new Chart(document.getElementById('giverTakerChart').getContext('2d'), { type: 'bar', data: { labels: ['不懂保護的給予者', '索取者', '互惠者', '聰明給予者'], datasets: [{ data: [30, 60, 75, 95], backgroundColor: ['#cbd5e1', '#f87171', '#60a5fa', '#15803d'], borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
+        new Chart(document.getElementById('circlesChart').getContext('2d'), { type: 'doughnut', data: { labels: ['核心圈', '中間層', '外圈'], datasets: [{ data: [15, 35, 100], backgroundColor: ['#1e3a8a', '#3b82f6', '#e2e8f0'], borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '50%', plugins: { legend: { display: false } } } });
+        new Chart(document.getElementById('moatChart').getContext('2d'), { type: 'bar', indexAxis: 'y', data: { labels: ['價值觀 (你是誰)', '共感力 (你懂我)', '透明度 (你誠實)', '專業力 (你懂)'], datasets: [{ data: [90, 70, 50, 30], backgroundColor: ['#1e3a8a', '#2563eb', '#60a5fa', '#93c5fd'], borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { grid: { display: false } } } } });
+
+        // Scenarios Data
+        const scenarios = {
+            1: { title: "情境演練 A：仲介拗免費試算", text: "遇到不常配合的仲介打來：「妹妹，這土地很急，幫我算一下增值稅，算好我就叫客戶給你們宏國辦！」", options: [{ text: "❌ 害怕得罪對方，立刻幫他算。", feedbackTitle: "錯誤！這會被當成免費勞工。", feedback: "對方可能拿免費數據去別家辦理。", type: "bad" }, { text: "✅ 回覆：「好的大哥，麻煩您先把『委託單』填妥傳給我！」", feedbackTitle: "正確！設立「付費牆」。", feedback: "透過表單增加他的麻煩，過濾白嫖客。", type: "good" }] },
+            2: { title: "情境演練 B：防止被搶功勞", text: "辛苦整理的繼承表交給業務後，業務在客戶面前說：「這都是我找私人關係特別幫你處理的」", options: [{ text: "❌ 覺得算了，只要拿到代書費就好。", feedbackTitle: "錯誤！客戶會產生誤解。", feedback: "長久下來，宏國與易丞的專業會被貶低。", type: "bad" }, { text: "✅ 所有檔案加上浮水印，並直接傳給客戶。", feedbackTitle: "正確！留下「工作足跡」。", feedback: "主動聯繫客戶回報進度，不讓別人收割妳的努力！", type: "good" }] },
+            3: { title: "情境演練 C：大客戶拗助理", text: "帶來很多業績的建商窗口，常叫助理幫他跑腿印私人文件。", options: [{ text: "❌ 為了大局默默吞下去。", feedbackTitle: "錯誤！陷入「焦慮區」。", feedback: "對方的要求只會得寸進尺，助理會受不了離職。", type: "bad" }, { text: "✅ 向老闆報告，請老闆出面設定界線。", feedbackTitle: "正確！讓老闆來當黑臉！", feedback: "楊代書主動跟對方溝通，保護團隊資源！", type: "good" }] }
+        };
+
+        window.loadScenario = (id) => {
+            const data = scenarios[id];
+            document.getElementById('scenarioContainer').classList.remove('hidden');
+            document.getElementById('scenTitle').innerText = data.title;
+            document.getElementById('scenText').innerText = data.text;
+            document.getElementById('scenFeedback').classList.add('hidden');
+            
+            const optionsDiv = document.getElementById('scenOptions');
+            optionsDiv.innerHTML = ''; optionsDiv.classList.remove('hidden');
+            data.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "p-4 border-2 border-blue-200 rounded-lg font-bold text-slate-700 hover:bg-blue-50 transition-all text-left";
+                btn.innerText = opt.text;
+                btn.onclick = () => window.showFeedback(opt);
+                optionsDiv.appendChild(btn);
+            });
+            document.getElementById('scenarioContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        window.showFeedback = (option) => {
+            document.getElementById('scenOptions').classList.add('hidden');
+            document.getElementById('aiDraftActionArea').classList.add('hidden');
+            document.getElementById('aiDraftLockArea').classList.add('hidden');
+            document.getElementById('aiDraftResult').classList.add('hidden');
+            
+            const fbDiv = document.getElementById('scenFeedback');
+            fbDiv.classList.remove('hidden');
+            document.getElementById('feedbackTitle').innerText = option.feedbackTitle;
+            document.getElementById('feedbackText').innerText = option.feedback;
+            
+            if (option.type === 'good') {
+                fbDiv.className = "mt-6 p-6 bg-green-50 border border-green-200 rounded-lg fade-in";
+                document.getElementById('feedbackTitle').className = "block mb-2 text-xl font-bold text-green-800";
+                
+                // Auth Check for AI Draft
+                if (window.currentUser) {
+                    document.getElementById('aiDraftActionArea').classList.remove('hidden');
+                    window.currentDraftContext = option.feedback;
+                } else {
+                    document.getElementById('aiDraftLockArea').classList.remove('hidden');
+                }
+            } else {
+                fbDiv.className = "mt-6 p-6 bg-red-50 border border-red-200 rounded-lg fade-in";
+                document.getElementById('feedbackTitle').className = "block mb-2 text-xl font-bold text-red-800";
+            }
+        };
+
+        window.resetScenario = () => {
+            document.getElementById('scenOptions').classList.remove('hidden');
+            document.getElementById('scenFeedback').classList.add('hidden');
+        };
+
+        // --- Gemini API Logic ---
+        async function fetchGeminiAPI(prompt, systemInstruction = "") {
+            if(!apiKey) throw new Error("尚未設定 Gemini API Key！請系統管理員於原始碼中填入。");
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+            if (systemInstruction) payload.systemInstruction = { parts: [{ text: systemInstruction }] };
+
+            let retries = 0; const maxRetries = 5;
+            while (retries < maxRetries) {
+                try {
+                    const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (!response.ok) throw new Error(`API 錯誤: ${response.status}`);
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "無法生成內容。";
+                } catch (error) {
+                    retries++;
+                    if (retries >= maxRetries) { console.error(error); throw error; }
+                    await new Promise(r => setTimeout(r, Math.pow(2, retries - 1) * 1000));
+                }
+            }
+        }
+
+        window.analyzeCustomScenario = async () => {
+            const text = document.getElementById('aiCustomScenarioInput').value.trim();
+            if (!text) return window.showErrorModal("請先輸入情境！");
+            
+            document.getElementById('aiAnalyzeBtn').disabled = true;
+            document.getElementById('aiAnalyzeSpinner').classList.remove('hidden');
+            document.getElementById('aiCustomScenarioResult').classList.add('hidden');
+
+            try {
+                const sys = "你是一位專為『宏國地政 | 易丞地政』設計的管理顧問。";
+                const usr = `請分析情境：「${text}」\n1. 判斷對方動機\n2. 提出防禦步驟。\n直接使用HTML輸出，無markdown。`;
+                const res = await fetchGeminiAPI(usr, sys);
+                document.getElementById('aiCustomScenarioResult').innerHTML = res;
+                document.getElementById('aiCustomScenarioResult').classList.remove('hidden');
+            } catch(e) { window.showErrorModal(e.message); }
+            
+            document.getElementById('aiAnalyzeBtn').disabled = false;
+            document.getElementById('aiAnalyzeSpinner').classList.add('hidden');
+        };
+
+        window.generateDraftEmail = async () => {
+            document.getElementById('aiDraftBtn').disabled = true;
+            document.getElementById('aiDraftSpinner').classList.remove('hidden');
+            document.getElementById('aiDraftResult').classList.add('hidden');
+
+            try {
+                const sys = "你是一位代表『宏國地政 | 易丞地政』的專業助理。語氣不卑不亢、禮貌且堅定。";
+                const usr = `依據策略草擬LINE/Email範本：「${window.currentDraftContext}」\n直接使用HTML輸出，無markdown。`;
+                const res = await fetchGeminiAPI(usr, sys);
+                document.getElementById('aiDraftResult').innerHTML = `<strong>✨ AI 草擬訊息（可直接複製修改）：</strong><br><br>` + res;
+                document.getElementById('aiDraftResult').classList.remove('hidden');
+            } catch(e) { window.showErrorModal(e.message); }
+            
+            document.getElementById('aiDraftBtn').disabled = false;
+            document.getElementById('aiDraftSpinner').classList.add('hidden');
+        };
+
+    </script>
+</body>
+</html>
