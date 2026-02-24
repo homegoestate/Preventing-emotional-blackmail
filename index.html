@@ -291,7 +291,7 @@
         // ==========================================
         // 👇👇👇 請將您的真實 Gemini API Key 填入下方的引號中 👇👇👇
         // ==========================================
-        const apiKey = "AIzaSyAdYfGjN5C408QOqYsW9mXGY2EmFF7MHtI"; 
+        const apiKey = "AIzaSyBVs3A1ZHH9wTuixAQyJuJiA_ZJfeQVtSs"; 
         // ==========================================
 
         const app = initializeApp(firebaseConfig);
@@ -464,7 +464,7 @@
         };
 
         async function fetchGeminiAPI(prompt, systemInstruction = "") {
-            if(!apiKey || apiKey === "AIzaSyAdYfGjN5C408QOqYsW9mXGY2EmFF7MHtI") throw new Error("尚未設定 Gemini API Key！請系統管理員於原始碼第 326 行填入。");
+            if(!apiKey || apiKey === "AIzaSyBVs3A1ZHH9wTuixAQyJuJiA_ZJfeQVtSs") throw new Error("尚未設定 Gemini API Key！請系統管理員於原始碼第 326 行填入。");
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             const payload = { contents: [{ parts: [{ text: prompt }] }] };
             if (systemInstruction) payload.systemInstruction = { parts: [{ text: systemInstruction }] };
